@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Arrêts du tram 14 des Transports Publics Genevois (TPG)</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</head>
+
+<body>
+
+    <div id="map" style=" height: 100vh;width: 100%"></div>
+
+    <script>
+        const map = L.map("map").setView([46.2044, 6.1432], 12);
+
+        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+            attribution: "&copy; OpenStreetMap contributors"
+        }).addTo(map);
+
+        const geojsonUrl = "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/TPG_ARRETS/FeatureServer/0/query?where=ligne+like+%27%2514%25%27&f=geojson";
+
+        fetch(geojsonUrl)
+            .then(response => response.json())
+            .then(data => {
+
+                // Affichage des arrêts
+                L.geoJSON(data, {
+                    onEachFeature: (feature, layer) => {
+                        const nom = feature.properties?.nom_arret || "Nom inconnu";
+                        layer.bindPopup(`<strong>${nom}</strong>`);
+                    },
+                    pointToLayer: (feature, latlng) => {
+                        return L.circleMarker(latlng, {
+                            radius: 6,
+                            fillColor: "red",
+                            color: "#fff",
+                            weight: 1,
+                            opacity: 1,
+                            fillOpacity: 0.9
+                        });
+                    }
+                }).addTo(map);
+            })
+            .catch(err => {
+                console.error("Erreur de chargement GeoJSON :", err);
+                alert("Impossible de charger les arrêts de bus.");
+            });
+    </script>
+
+</body>
+
+</html>
