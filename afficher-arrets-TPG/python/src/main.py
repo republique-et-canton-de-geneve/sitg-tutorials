@@ -33,7 +33,7 @@ filtered_stops_gdf = stops_gdf.sjoin(
 
 # Step 5: Create a map of Geneva and add municipal boundaries
 print("Generating map...")
-geneva_map = folium.Map(location=[46.2044, 6.1432], zoom_start=12, tiles=None)
+geneva_map = folium.Map(location=[46.25, 6.1432], zoom_start=11, tiles=None)
 
 ## Step 5.1: Add orthophoto as basemap
 folium.WmsTileLayer(
