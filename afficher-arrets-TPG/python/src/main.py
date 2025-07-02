@@ -33,14 +33,26 @@ filtered_stops_gdf = stops_gdf.sjoin(
 
 # Step 5: Create a map of Geneva and add municipal boundaries
 print("Generating map...")
-geneva_map = folium.Map(location=[46.2044, 6.1432], zoom_start=12)
+geneva_map = folium.Map(location=[46.2044, 6.1432], zoom_start=12, tiles=None)
 
-## Step 5.1: Add municipalities borders in red
+## Step 5.1: Add orthophoto as basemap
+folium.WmsTileLayer(
+    url="https://raster.sitg.ge.ch/arcgis/services/ORTHOPHOTOS_2023_EPSG3857/MapServer/WMSServer",
+    name="ORTHOPHOTOS_2023",
+    fmt="image/png",
+    layers="0",
+    attr="<a href='https://sitg.ge.ch/'>SITG</a>",
+    transparent=True,
+    overlay=True,
+    control=True,
+).add_to(geneva_map)
+
+## Step 5.2: Add municipalities borders in red
 folium.GeoJson(
     municipalities_gdf.geometry, style_function=lambda x: {"color": "red", "weight": 2}
 ).add_to(geneva_map)
 
-## Step 5.2: Add stop names to the map
+## Step 5.3: Add stop names to the map
 for _, row in filtered_stops_gdf.to_crs(epsg=4326).iterrows():
     folium.Marker(
         location=[row.geometry.y, row.geometry.x],
