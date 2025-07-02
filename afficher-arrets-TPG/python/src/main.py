@@ -42,9 +42,6 @@ folium.WmsTileLayer(
     fmt="image/png",
     layers="0",
     attr="<a href='https://sitg.ge.ch/'>SITG</a>",
-    transparent=True,
-    overlay=True,
-    control=True,
 ).add_to(geneva_map)
 
 ## Step 5.2: Add municipalities borders in red
