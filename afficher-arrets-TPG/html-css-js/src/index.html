@@ -19,6 +19,7 @@
 
         L.control.attribution().addAttribution('<a href="https://sitg.ge.ch/">SITG</a>').addTo(map);
 
+        // Ajout du fonds de plan vectoriel SITG
         L.esri.Vector.vectorTileLayer("https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/PLAN_SITG_EPSG3857/VectorTileServer", {}).addTo(map);
 
         const geojsonUrl = "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/TPG_ARRETS/FeatureServer/0/query?where=ligne+like+%27%2514%25%27&f=geojson";
