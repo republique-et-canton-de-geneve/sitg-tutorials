@@ -3,8 +3,11 @@
 
 <head>
     <title>Arrêts du tram 14 des Transports Publics Genevois (TPG)</title>
+    <!-- Credits: https://www.npmjs.com/package/esri-leaflet-vector -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet@3.0.17/dist/esri-leaflet.js"></script>
+    <script src="https://unpkg.com/esri-leaflet-vector@4.3.0/dist/esri-leaflet-vector.js"></script>
 </head>
 
 <body>
@@ -12,11 +15,12 @@
     <div id="map" style=" height: 100vh;width: 100%"></div>
 
     <script>
-        const map = L.map("map").setView([46.2044, 6.1432], 12);
+        const map = L.map("map", {attributionControl: false}).setView([46.2044, 6.1432], 12);
 
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "&copy; OpenStreetMap contributors"
-        }).addTo(map);
+        L.control.attribution().addAttribution('<a href="https://sitg.ge.ch/">SITG</a>').addTo(map);
+
+        // Ajout du fonds de plan vectoriel SITG
+        L.esri.Vector.vectorTileLayer("https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/PLAN_SITG_EPSG3857/VectorTileServer", {}).addTo(map);
 
         const geojsonUrl = "https://vector.sitg.ge.ch/arcgis/rest/services/Hosted/TPG_ARRETS/FeatureServer/0/query?where=ligne+like+%27%2514%25%27&f=geojson";
 
